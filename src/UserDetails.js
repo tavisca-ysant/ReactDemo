@@ -1,35 +1,40 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./style.css";
-class UserDetails extends React.Component {
 
-    constructor(){
+
+class UserDetails extends React.Component {
+    constructor(props){
         super();
         this.state = {
-            finalNames : ["Yatharth","Sant"]
+            firstname: props.users.split(" ")[0],
+            lastname: props.users.split(" ")[1]
         }
+    }
+    UNSAFE_componentWillReceiveProps(newProps) {
+        this.setState({
+            firstname: newProps.users.split(" ")[0],
+            lastname: newProps.users.split(" ")[1]
+        })
     }
 
     render() {
-        const {userInfo} = this.props;
+        
+        let userList = this.props.users;
         return (
-                <div className="right-container">
-                    <div align='center'>
-                       <label>First Name </label>
-                        <input type='text' name='fname' id = 'firstname' value={`${userInfo[0]}`} onChange={e => this.setState({ finalNames: e.target.value })}></input><br/><br/>
-                        <label>Last Name </label>
-                        <input type='text' name='fname' id = 'lastname' value={`${userInfo[1]}`}></input><br/><br/>
-                        <button name = "Update" value="Update" onClick={this.onClickAction.bind(this)}>Update</button>
-                    </div>
+            <div className="right-container" align="center">
+                <div className="user-detail-content">
+                    <label>First Name : </label>
+                    <input type="text"  value={this.state.firstname} onChange={e => this.setState({firstname: e.target.value})}/>
+                    <br /><br/>
+                    <label>Last Name : </label>
+                    <input type="text"  value={this.state.lastname} onChange={e => this.setState({lastname: e.target.value})}/>
+                    <br /><br/>
+                    <button onClick={() => this.props.funcUpdatArray(this.state.firstname+" "+this.state.lastname)}>Update</button>
                 </div>
+            </div>
         );
-    }
-    onClickAction(){
-        let fname = document.getElementById('firstname').value;
-        let lname = document.getElementById('lastname').value;
-        this.setState({
-            finalNames: [fname, lname]
-        });
-    }
-}
+        }
+} 
+
 export default UserDetails;
